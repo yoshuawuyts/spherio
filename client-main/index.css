@@ -1,0 +1,7 @@
+@import 'css-wipe';
+@import './variables.css';
+@import './typography.css';
+
+body, html {
+  height: 100%;
+}

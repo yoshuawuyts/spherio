@@ -1,0 +1,18 @@
+{
+  "name": "client-views",
+  "version": "1.0.0",
+  "private": true,
+  "browserify": {
+    "transform": [
+      "babelify"
+    ]
+  },
+  "dependencies": {
+    "css-wipe": "^4.1.2",
+    "dom-delegator": "^13.1.0",
+    "hash-match": "^1.0.2",
+    "virtual-dom": "^2.1.1",
+    "virtual-raf": "^2.0.2",
+    "wayfarer": "^5.0.1"
+  }
+}

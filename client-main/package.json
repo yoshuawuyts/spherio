@@ -1,0 +1,20 @@
+{
+  "name": "client-main",
+  "version": "1.0.0",
+  "private": true,
+  "browserify": {
+    "transform": [
+      "babelify"
+    ]
+  },
+  "dependencies": {
+    "babelify": "^6.3.0",
+    "css-wipe": "^4.1.2",
+    "dom-delegator": "^13.1.0",
+    "hash-match": "^1.0.2",
+    "state-atom": "^2.1.1",
+    "virtual-dom": "^2.1.1",
+    "virtual-raf": "^2.0.3",
+    "wayfarer": "^5.0.1"
+  }
+}
