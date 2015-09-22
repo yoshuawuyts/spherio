@@ -5,7 +5,7 @@
 [![Downloads][downloads-image]][downloads-url]
 [![js-standard-style][standard-image]][standard-url]
 
-IT&#39;S A GIANT SPHERE.
+IT'S A GIANT SPHERE.
 
 ## Installation
 ```sh
