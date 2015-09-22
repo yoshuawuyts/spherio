@@ -1,6 +1,8 @@
 const typekit = require('inject-typekit-script-stream')
 const watchifyRequest = require('watchify-request')
 const toServer = require('wayfarer-to-server')
+const sendError = require('send-data/error')
+const boleStream = require('bole-stream')
 const httpNdjson = require('http-ndjson')
 const summary = require('server-summary')
 const html = require('simple-html-index')
@@ -9,12 +11,16 @@ const sendCss = require('send-data/css')
 const match = require('pathname-match')
 const wayfarer = require('wayfarer')
 const watchify = require('watchify')
+const json = require('JSONStream')
 const npm = require('rework-npm')
 const rework = require('rework')
 const myth = require('myth')
+const bole = require('bole')
 const http = require('http')
 const bl = require('bl')
 const fs = require('fs')
+
+bole.output({ level: 'info', stream: process.stdout })
 
 const router = toServer(wayfarer('404'))
 const staticRouter = toServer(wayfarer())
@@ -47,7 +53,12 @@ var b = browserify({
 })
 if (process.env.NODE_ENV === 'development') b = watchify(b)
 const handler = watchifyRequest(b)
-staticRouter.on('/bundle.js', { get: (req, res) => handler(req, res) })
+staticRouter.on('/bundle.js', {
+  get: (req, res) => handler(req, res, err => {
+    bole.error(err)
+    sendError(req, res, err)
+  })
+})
 
 // css
 staticRouter.on('/bundle.css', {
@@ -67,7 +78,9 @@ staticRouter.on('/bundle.css', {
 
 // create server
 const server = http.createServer(function (req, res) {
-  httpNdjson(req, res).pipe(process.stdout)
+  httpNdjson(req, res)
+    .pipe(json.parse())
+    .pipe(boleStream({ level: 'info' }))
   router(match(req.url), req, res)
 })
 
