@@ -24,6 +24,7 @@ bole.output({ level: 'info', stream: process.stdout })
 
 const router = toServer(wayfarer('404'))
 const staticRouter = toServer(wayfarer())
+const logger = bole('index')
 
 // 404
 router.on('static', staticRouter)
@@ -55,8 +56,8 @@ if (process.env.NODE_ENV === 'development') b = watchify(b)
 const handler = watchifyRequest(b)
 staticRouter.on('/bundle.js', {
   get: (req, res) => handler(req, res, err => {
-    bole.error(err)
-    sendError(req, res, err)
+    logger.error(err)
+    sendError(req, res, { body: 'browserify error' })
   })
 })
 
