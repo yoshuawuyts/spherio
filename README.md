@@ -9,18 +9,28 @@ IT'S A GIANT SPHERE.
 
 ## Installation
 ```sh
-$ npm install spherio
+$ git clone https://github.com/yoshuawuyts/spherio
+$ cd spherio && npm install
 ```
 
 ## Usage
-```js
-const spherio = require('spherio')
+```txt
+Lifecycle scripts included in spherio:
+  start
+    node .
+  prepublish
+    if [ "$NODE_ENV" != "production" ]; then npm run dev; fi
 
-spherio()
+available via `npm run-script`:
+  clean
+    rm-modules
+  dev
+    linklocal link -r && linklocal list -r | bulk -c 'npm install --production'
+  start:watch
+    NODE_ENV=development nodemon -i 'node_modules/' -i 'client*' -i 'component*' -- ./index.js | garnish
+  watch
+    npm run start:watch
 ```
-
-## API
-### spherio
 
 ## License
 [MIT](https://tldrlegal.com/license/mit-license)
