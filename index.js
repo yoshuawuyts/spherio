@@ -58,9 +58,12 @@ var b = browserify({
 if (process.env.NODE_ENV === 'development') b = watchify(b)
 const handler = watchifyRequest(b)
 staticRouter.on('/bundle.js', {
-  get: (req, res) => handler(req, res, err => {
-    logger.error(err)
-    sendError(req, res, { body: 'browserify error' })
+  get: (req, res) => handler(req, res, (err, body) => {
+    if (err) {
+      logger.error(err)
+      return sendError(req, res, { body: 'browserify error' })
+    }
+    res.end(body)
   })
 })
 
