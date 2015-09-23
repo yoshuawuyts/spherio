@@ -1,4 +1,5 @@
 const typekit = require('inject-typekit-script-stream')
+const lrScript = require('inject-lr-script-stream')
 const watchifyRequest = require('watchify-request')
 const toServer = require('wayfarer-to-server')
 const sendError = require('send-data/error')
@@ -24,7 +25,7 @@ bole.output({ level: 'info', stream: process.stdout })
 
 const router = toServer(wayfarer('404'))
 const staticRouter = toServer(wayfarer())
-const logger = bole('index')
+const logger = bole('server')
 
 // 404
 router.on('static', staticRouter)
@@ -41,8 +42,10 @@ const htmls = html({
   entry: 'static/bundle.js',
   css: 'static/bundle.css'
 })
-const tk = typekit({ kitId: 'ohj8vea' })
-const htmlBuf = htmls.pipe(tk).pipe(bl())
+const htmlBuf = htmls
+  .pipe(typekit({ kitId: 'ohj8vea' }))
+  .pipe(lrScript())
+  .pipe(bl())
 router.on('/', { get: (req, res) => htmlBuf.duplicate().pipe(res) })
 
 // js
