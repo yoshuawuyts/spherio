@@ -11,10 +11,15 @@ const mat4 = require('gl-mat4')
 const vert = glslify('./shader.vert')
 const frag = glslify('./shader.frag')
 
-module.exports = main
+module.exports = Context
 
-function main () {
-  const canvas = document.body.appendChild(document.createElement('canvas'))
+function Context () {
+  if (!(this instanceof Context)) return new Context()
+  this.type = 'Widget'
+}
+
+Context.prototype.init = function () {
+  const canvas = document.createElement('canvas')
   const gl = glContext(canvas, render)
   const camera = orbitCamera(canvas)
 
@@ -36,12 +41,15 @@ function main () {
 
   const shader = glShader(gl, vert, frag)
 
+  return canvas
+
   // update vars before used in render loop
   // null -> null
   function update () {
     height = gl.drawingBufferHeight
     width = gl.drawingBufferWidth
 
+    camera.view(view)
     camera.tick()
 
     const aspectRatio = gl.drawingBufferWidth / gl.drawingBufferHeight
@@ -59,6 +67,8 @@ function main () {
     gl.viewport(0, 0, width, height)
     gl.enable(gl.DEPTH_TEST)
     gl.enable(gl.CULL_FACE)
+    gl.clearColor(0, 0, 0, 0)
+    gl.clear(gl.COLOR_BUFFER_BIT)
     geo.bind(shader)
     shader.uniforms.uProjection = projection
     shader.uniforms.uView = view
