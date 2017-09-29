@@ -34,7 +34,7 @@
     "send-data": "^7.0.0",
     "server-summary": "^3.2.0",
     "simple-html-index": "^1.1.2",
-    "tiny-lr": "^0.1.6",
+    "tiny-lr": "^1.0.5",
     "watchify": "^3.4.0",
     "watchify-request": "^2.0.0",
     "wayfarer": "^5.0.1",
